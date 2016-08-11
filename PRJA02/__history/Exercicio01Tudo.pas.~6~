@@ -1,0 +1,49 @@
+unit Exercicio01Tudo;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
+  Data.DB, Datasnap.DBClient, Vcl.DBCtrls, Vcl.Grids, Vcl.DBGrids;
+
+type
+  TForm1 = class(TForm)
+    dsDataSet: TClientDataSet;
+    ds1: TDataSource;
+    pnl1: TPanel;
+    grpFiltro: TGroupBox;
+    lbl1: TLabel;
+    edtValorFiltro: TEdit;
+    btnAddFiltro: TButton;
+    btnRemoverFiltro: TButton;
+    dbgrd1: TDBGrid;
+    dbnvgr1: TDBNavigator;
+    intgrfldDataSetId: TIntegerField;
+    strngfldDataSetNome: TStringField;
+    crncyfldDataSetValor: TCurrencyField;
+    fltfldDataSetQuantidade: TFloatField;
+    crncyfldDataSetTotal: TCurrencyField;
+    agrgtfldDataSetProdutosTotal: TAggregateField;
+    lblLbl2: TLabel;
+    procedure dsDataSetCalcFields(DataSet: TDataSet);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.dsDataSetCalcFields(DataSet: TDataSet);
+begin
+   agrgtfldDataSetProdutosTotal;
+end;
+
+end.
+

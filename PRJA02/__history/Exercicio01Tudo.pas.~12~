@@ -1,0 +1,101 @@
+unit Exercicio01Tudo;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
+  Data.DB, Datasnap.DBClient, Vcl.DBCtrls, Vcl.Grids, Vcl.DBGrids;
+
+type
+  TForm1 = class(TForm)
+    dsDataSet: TClientDataSet;
+    ds1: TDataSource;
+    pnl1: TPanel;
+    grpFiltro: TGroupBox;
+    lbl1: TLabel;
+    edtValorFiltro: TEdit;
+    btnAddFiltro: TButton;
+    btnRemoverFiltro: TButton;
+    dbgrd1: TDBGrid;
+    dbnvgr1: TDBNavigator;
+    intgrfldDataSetId: TIntegerField;
+    strngfldDataSetNome: TStringField;
+    crncyfldDataSetValor: TCurrencyField;
+    fltfldDataSetQuantidade: TFloatField;
+    crncyfldDataSetTotal: TCurrencyField;
+    agrgtfldDataSetProdutosTotal: TAggregateField;
+    lblLbl2: TLabel;
+    btnLimparDados: TButton;
+    btnIndexarID: TButton;
+    btnIndexarNome: TButton;
+    btnPercorrer: TButton;
+    edt1: TEdit;
+    procedure dsDataSetCalcFields(DataSet: TDataSet);
+    procedure btnLimparDadosClick(Sender: TObject);
+    procedure btnIndexarIDClick(Sender: TObject);
+    procedure btnIndexarNomeClick(Sender: TObject);
+    procedure btnPercorrerClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.btnIndexarIDClick(Sender: TObject);
+begin
+dsDataSet.IndexFieldNames;
+end;
+
+procedure TForm1.btnIndexarNomeClick(Sender: TObject);
+begin
+  dsDataSet.IndexFieldNames;
+end;
+
+procedure TForm1.btnLimparDadosClick(Sender: TObject);
+begin
+  dsDataSet.EmptyDataSet;
+end;
+
+procedure TForm1.btnPercorrerClick(Sender: TObject);
+var
+ vEncontrou: Boolean;
+begin
+  vEncontrou:= False;
+  dsDataSet.DisableControls;
+   try
+     dsDataSet.First;
+      while not dsDataSet.Eof do
+        begin
+          if(dsDataSet.FieldByName('Codigo').AsString = edtValorFiltro.Text) then
+           begin
+             vEncontrou:= True;
+             Break;
+             end;
+             dsDataSet.Next;
+           end;
+     finally
+        dsDataSet.EnableConstraints;
+   end;
+end;
+
+procedure TForm1.dsDataSetCalcFields(DataSet: TDataSet);
+begin
+  if (not dsDataSet.FieldByName('valor').IsNull) and
+     (not dsDataSet.FieldByName('Quantidade').IsNull) then
+ begin
+   dsDataSet.FieldByName('ProdutosTotal').Value :=
+   dsDataSet.FieldByName('Valor').Value * dsDataSet.FieldByName('Quantidade').Value;
+ end;
+
+end;
+
+end.
+
