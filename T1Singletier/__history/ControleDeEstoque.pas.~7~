@@ -1,0 +1,92 @@
+unit ControleDeEstoque;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Datasnap.DBClient,
+  Vcl.StdCtrls, Vcl.Grids, Vcl.DBGrids, Vcl.Mask, Vcl.DBCtrls, Vcl.ExtCtrls;
+
+type
+  TForm1 = class(TForm)
+    ds1: TClientDataSet;
+    ds2: TDataSource;
+    intgrfldds1Codigo: TIntegerField;
+    strngfldds1Descricao: TStringField;
+    strngfldds1Unidade: TStringField;
+    strngfldds1Fornecedor: TStringField;
+    dtfldds1Data: TDateField;
+    fltfldds1Quantidade: TFloatField;
+    crncyfldds1Unitario: TCurrencyField;
+    crncyfldds1Total: TCurrencyField;
+    agrgtfldds1EstoqueQtd: TAggregateField;
+    agrgtfldds1EstoqueVlr: TAggregateField;
+    pnl1: TPanel;
+    dbnvgr1: TDBNavigator;
+    pnl2: TPanel;
+    lbl1: TLabel;
+    lbl2: TLabel;
+    lbl3: TLabel;
+    lbl4: TLabel;
+    lbl5: TLabel;
+    lbl6: TLabel;
+    lbl7: TLabel;
+    lbl8: TLabel;
+    dbedt1: TDBEdit;
+    dbedt2: TDBEdit;
+    dbedt3: TDBEdit;
+    dbedt4: TDBEdit;
+    dbedt5: TDBEdit;
+    dbedt6: TDBEdit;
+    dbedt7: TDBEdit;
+    dbedt8: TDBEdit;
+    lbl9: TLabel;
+    edtValor: TEdit;
+    cbbCampo: TComboBox;
+    cbbAcao: TComboBox;
+    lbl10: TLabel;
+    lbl11: TLabel;
+    btnExecutar: TButton;
+    dbgrd1: TDBGrid;
+    grpTotais: TGroupBox;
+    lbl13: TLabel;
+    dbedt9: TDBEdit;
+    lbl12: TLabel;
+    dbedt10: TDBEdit;
+    procedure ds1CalcFields(DataSet: TDataSet);
+    procedure FormCreate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.ds1CalcFields(DataSet: TDataSet);
+begin
+if (not ds1.FieldByName('Quantidade').IsNull) and
+     (not ds1.FieldByName('Unitario').IsNull) then
+ begin
+   ds1.FieldByName('EstoqueVlr').Value :=
+   ds1.FieldByName('Qun=antidade').Value * ds1.FieldByName('Unitario').Value;
+ end;
+end;
+
+procedure TForm1.FormCreate(Sender: TObject);
+const
+  cDataFile = 'Data.xml';
+begin
+//extrai o caminho de um executavel ExtractFilePath
+  ds1.FileName := ExtractFilePath(Application.ExeName) + cDataFile;
+  if FileExists(ds1.FileName) then
+    ds1.Open
+  else
+    ds1.CreateDataSet;
+end;
+end.
